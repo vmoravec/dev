@@ -16,5 +16,11 @@ Installation
 ### Manual
 When copying the content of the folder files/ by hand into the home folder, rename vim/ to .vim/ and vimrc to .vimrc
 
+Content
+-------
+### Plugins:
+`Nerdtree` (https://github.com/scrooloose/nerdtree)
+`Fugitive` (https://github.com/tpope/vim-fugitive)
+
 
 
