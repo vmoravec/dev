@@ -19,8 +19,8 @@ When copying the content of the folder files/ by hand into the home folder, rena
 Content
 -------
 ### Plugins:
-`Nerdtree` (https://github.com/scrooloose/nerdtree)
-`Fugitive` (https://github.com/tpope/vim-fugitive)
+`Nerdtree` [https://github.com/scrooloose/nerdtree]
+`Fugitive` [https://github.com/tpope/vim-fugitive]
 
 
 
