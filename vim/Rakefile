@@ -1,24 +1,45 @@
 desc "Install vim configuration files"
 task :install do
-  running
+  vim_configuration
 end
 task :default => :install
 
-def running
+def vim_configuration
   require 'etc'
   home = Etc.getpwuid.dir
   vim  = "vim"
   time = Time.now.strftime "%Y-%m-%d-%H:%M"
 
   puts ""
-  puts "  Vim configuration is going to be put into your home folder."
+  puts "  This script is going to put vim configuration files in to your home folder."
   puts ""
   puts "  Your home folder seems to be at #{home}"
   puts ""
   puts "  If files or folders with the same name already exist, backup is going to be created at"
   puts "  #{home}/.dev-config/#{vim}/#{time}-backup"
-  puts "  If this is ok, confirm with 'y'."
-  puts "  If you prefer different destination folder, confirm with 'n'."
-  puts "  Your answer is: "
-  puts gets
+  puts "  If this is ok, confirm with 'yes'."
+  puts "  If you prefer any different installation path, confirm with 'no'."
+  puts "  For exiting confirm with 'exit'."
+  puts ""
+  print "  Your answer is: "
+
+  input = case gets.strip
+  when "yes" then default_installation
+  when "no" then alternate_installation
+  when "exit" then exiting ; exit 0
+  end
+end
+
+def default_installation ; end
+def alternate_installation 
+  begin
+  print "  Enter the prefered path for vim config files (or Ctrl+C to exit): "
+  input = gets
+  rescue Interrupt
+  ensure exiting
+  end
+end
+
+def exiting
+  puts "  Exiting.."
 end
