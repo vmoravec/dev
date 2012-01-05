@@ -1,22 +1,22 @@
 " hide this unless you run debian
 runtime! debian.vim
 "   ----------------  GENERAL ----------------
-set autowrite		        " Automatically save before commands like :next and :make
+set autowrite                   " Automatically save before commands like :next and :make
 set hidden                      " Hide buffers when they are abandoned
 set nocompatible
 set viminfo^=!
-set cf 				" Enable error files & error jumping
-set clipboard+=unnamed 		" Yanks go on clipboard instead
-set history=256			" Number of thins to remember in history
-set wrap		
-set timeoutlen=250		" Time towait after ESC
+set cf                          " Enable error files & error jumping
+set clipboard+=unnamed          " Yanks go on clipboard instead
+set history=256                 " Number of thins to remember in history
+set wrap
+set timeoutlen=250              " Time towait after ESC
 "   ----------------  TABS  ------------------
-set ts=2			" Tabs are 2 spaces
-set bs=2			" Backspace over everything in insert mode
-set shiftwidth=2		" Tabs under smart indent
+set ts=2                        " Tabs are 2 spaces
+set bs=2                        " Backspace over everything in insert mode
+set shiftwidth=2                " Tabs under smart indent
 "   ----------------  SEARCH  ------------------
-set ignorecase		        " Do case insensitive matching
-set incsearch		        " Incremental search
+set ignorecase                  " Do case insensitive matching
+set incsearch                   " Incremental search
 set nocp incsearch
 set cinoptions=:0,p0,t0
 set cinwords=if,else,while,do,for,switch,case
@@ -26,16 +26,16 @@ set smarttab
 set expandtab
 set wmh=0
 "   ----------------  VISUAL  ------------------
-set showmatch " Show matching brackets
-set mat=2     " Bracket blinking
+set showmatch                    " Show matching brackets
+set mat=2                        " Bracket blinking
 set list
 set lcs=tab:\ \ ,eol:$,trail:~,extends:>,precedes:<
-set novisualbell		" No blinking
-set noerrorbells		" No noise
-set laststatus=2		" Always show status line
-set mouse=a			" Mouse in all modes -> gvim
-set number			" Show line numbers
-set ruler			" Ruler on
+set novisualbell                 " No blinking
+set noerrorbells                 " No noise
+set laststatus=2                 " Always show status line
+set mouse=a                      " Mouse in all modes -> gvim
+set number                       " Show line numbers
+set ruler                        " Ruler on
 "   ----------------  VARIOUS  ------------------
 syntax on
 filetype plugin on
@@ -44,7 +44,7 @@ au BufNewFile,BufRead *.config set filetype=ruby
 au BufNewFile,BufRead *.ru set filetype=ruby
 autocmd BufWritePre *.{rb,js} :%s/\s\+$//e
 "   ----------------  COLORS  ------------------
-colorscheme grey_vm
+colorscheme black_background
 "   ----------------  BACKUP  ------------------
 set nobackup
 set nowritebackup
@@ -72,10 +72,10 @@ set guicursor=a:blinkon0
 call pathogen#infect()
 "   -------------  FUGITIVE --------------------
 set statusline=%<%f\ %h%m%r%#Git#\ %{fugitive#statusline()}\ %#StatusLine#\ %=%-14.(%l,%c%V%)\ %P
-"   -------------  OVERLENGTH ------------------ 
+"   -------------  OVERLENGTH ------------------
 " highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 " match OverLength /\%81v.\+/
-"   -------------  COMMENTS   ----------------- 
+"   -------------  COMMENTS   -----------------
 " perl
 map ,# :s/^/#/<CR>
 " C/C++/C#/Java
@@ -84,10 +84,10 @@ map ,/ :s/^/\/\//<CR>
 map ,< :s/^\(.*\)$/<!-- \1 -->/<CR><Esc>:nohlsearch<CR>
 " c++ java style
 map ,* :s/^\(.*\)$/\/\* \1 \*\//<CR><Esc>:nohlsearch<CR>
-"   -------------  TIMESTAMP F3   ----------------- 
+"   -------------  TIMESTAMP F3   -----------------
 nmap <F3> a<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
 imap <F3> <C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR>
-"   -------------  RUBY FOLDING ----------------- 
+"   -------------  RUBY FOLDING -----------------
 " FoldSearch-based folding.
 " Copyright (C) 2005 Mauricio Fernandez <mfp@acm.org>
 " Current version: http://eigenclass.org/hiki.rb?Usable+Ruby+folding+for+Vim
