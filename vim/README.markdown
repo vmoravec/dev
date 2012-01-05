@@ -6,13 +6,15 @@ Quick customization of vim providing some useful plugins, scripts and color sche
 
 Installation
 ------------
+### git & ruby
 `git clone git://github.com/vmoravec/dev-config.git`
 
 `cd dev-config/vim`
 
 `rake install`
 
-When copying the content of the folder files/ by hand, rename vim/ to .vim/ and vimrc to .vimrc
+### Manual
+When copying the content of the folder files/ by hand into the home folder, rename vim/ to .vim/ and vimrc to .vimrc
 
 Ruby
 ----
