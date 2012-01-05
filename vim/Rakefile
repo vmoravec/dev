@@ -1,0 +1,24 @@
+desc "Install vim configuration files"
+task :install do
+  running
+end
+task :default => :install
+
+def running
+  require 'etc'
+  home = Etc.getpwuid.dir
+  vim  = "vim"
+  time = Time.now.strftime "%Y-%m-%d-%H:%M"
+
+  puts ""
+  puts "  Vim configuration is going to be put into your home folder."
+  puts ""
+  puts "  Your home folder seems to be at #{home}"
+  puts ""
+  puts "  If files or folders with the same name already exist, backup is going to be created at"
+  puts "  #{home}/.dev-config/#{vim}/#{time}-backup"
+  puts "  If this is ok, confirm with 'y'."
+  puts "  If you prefer different destination folder, confirm with 'n'."
+  puts "  Your answer is: "
+  puts gets
+end
