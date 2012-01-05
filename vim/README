@@ -1,0 +1,3 @@
+Copy everything from this folder into you home folder and run:
+mv vimr .vimrc
+mv vim/ .vim/
