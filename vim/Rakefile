@@ -1,12 +1,20 @@
 desc "Install vim configuration files"
 task :install do
+  begin
   vim_configuration
+  rescue Interrupt
+  ensure exiting
+  end
 end
+
+task :restore do
+  puts "restoring the backup"
+  #TODO arguments or choices to restore
+end
+
 task :default => :install
 
 def vim_configuration
-  require 'etc'
-  home = Etc.getpwuid.dir
   vim  = "vim"
   time = Time.now.strftime "%Y-%m-%d-%H:%M"
 
@@ -30,14 +38,32 @@ def vim_configuration
   end
 end
 
-def default_installation ; end
+FILES = ['vimrc', 'vim']
+
+def files
+  path = File.join pwd, 'files'
+  FILES.map {|file| File.join path, file }
+end
+
+def pwd
+  Dir.pwd
+end
+
+def home
+  require 'etc'
+  Etc.getpwuid.dir
+end
+
+def default_installation
+  installation_path = '/home/vlad/test/home'
+  files.each do |file|
+    FileUtils.cp_r file, installation_path
+  end
+end
+
 def alternate_installation 
-  begin
   print "  Enter the prefered path for vim config files (or Ctrl+C to exit): "
   input = gets
-  rescue Interrupt
-  ensure exiting
-  end
 end
 
 def exiting
