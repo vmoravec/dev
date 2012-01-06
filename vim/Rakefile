@@ -7,49 +7,67 @@ task :install do
   end
 end
 
+desc "Restore previous configuration"
 task :restore do
-  puts "restoring the backup"
+  puts "restoring the backup is not implemented yet"
   #TODO arguments or choices to restore
 end
 
 task :default => :install
+task :vim_install => :install
 
 def vim_configuration
   vim  = "vim"
   time = Time.now.strftime "%Y-%m-%d-%H:%M"
 
-  puts ""
-  puts "  This script is going to put vim configuration files in to your home folder."
-  puts ""
-  puts "  Your home folder seems to be at #{home_path}"
-  puts ""
-  puts "  If files or folders with the same name already exist, backup is going to be created at"
-  puts "  #{home_path}/.dev-config/#{vim}/#{time}-backup"
-  puts "  If this is ok, confirm with 'yes'."
-  puts "  If you prefer any different installation path, confirm with 'no'."
-  puts "  For exiting confirm with 'exit'."
-  puts ""
-  print "  Your answer is: "
+  out
+  out "This script is going to put vim configuration files in to your home folder."
+  out
+  out "Your home folder seems to be at #{colorize home_dir}"
+  out
+  out "If files or folders with the same name already exist, backup is going to be created at"
+  out "#{colorize home_dir + '/.dev-config/' + vim + '/' + time + '-backup'}"
+  out
+  out "If this is ok, confirm with 'yes'."
+  out "If you prefer any different installation path, confirm with 'no'."
+  out "For exiting confirm with 'exit'."
+  out
+  out "Your answer is: ", :print=>true
 
-  input = gets.strip
+  input = STDIN.gets.strip
+
   case input
   when "yes" then default_installation
   when "no" then alternate_installation
   when "exit" then exiting
   else
-    puts "  Unknown option '#{input}'."
+    out "Unknown option '#{input}'."
   end
 end
 
+
+def out text = '', options={:print=>false}
+  if options[:print]
+    Kernel.print "  #{text}"
+  else
+    Kernel.puts  "  #{text}"
+  end
+end
+
+def colorize text
+  "\e[1;33;40m#{text}\e[0m"
+end
+
 def files
-  path = File.join Dir.pwd, 'files'
-  Dir.entries path
+  current_dir = Dir.pwd
+  files_dir_name = 'files'
+  Dir.entries File.join(current_dir, files_dir_name)
 end
 
 
-def home_path
+def home_dir
   require 'etc'
-  home_dir = Etc.getpwuid.dir
+  home = Etc.getpwuid.dir
   # for testing purposes create a different destination
   # Dir.mkdir home_dir + 'test'
   # http://ruby.runpaint.org/files
@@ -72,13 +90,13 @@ def default_installation
 end
 
 def alternate_installation 
-  print "  Enter the prefered path for vim config files (or Ctrl+C to exit): "
-  input = gets
+  out "Enter the prefered path for vim config files (or Ctrl+C to exit): ", :print=>true
+  input = STDIN.gets
 end
 
 def exiting
   @exiting = true
-  puts "  Exiting now .."
+  out "Exiting now.."
   exit 0
 end
 
