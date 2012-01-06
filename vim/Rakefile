@@ -3,7 +3,7 @@ task :install do
   begin
   vim_configuration
   rescue Interrupt
-  ensure exiting
+  ensure exiting unless exiting?
   end
 end
 
@@ -21,42 +21,52 @@ def vim_configuration
   puts ""
   puts "  This script is going to put vim configuration files in to your home folder."
   puts ""
-  puts "  Your home folder seems to be at #{home}"
+  puts "  Your home folder seems to be at #{home_path}"
   puts ""
   puts "  If files or folders with the same name already exist, backup is going to be created at"
-  puts "  #{home}/.dev-config/#{vim}/#{time}-backup"
+  puts "  #{home_path}/.dev-config/#{vim}/#{time}-backup"
   puts "  If this is ok, confirm with 'yes'."
   puts "  If you prefer any different installation path, confirm with 'no'."
   puts "  For exiting confirm with 'exit'."
   puts ""
   print "  Your answer is: "
 
-  input = case gets.strip
+  input = gets.strip
+  case input
   when "yes" then default_installation
   when "no" then alternate_installation
-  when "exit" then exiting ; exit 0
+  when "exit" then exiting
+  else
+    puts "  Unknown option '#{input}'."
   end
 end
 
-FILES = ['vimrc', 'vim']
-
 def files
-  path = File.join pwd, 'files'
-  FILES.map {|file| File.join path, file }
+  path = File.join Dir.pwd, 'files'
+  Dir.entries path
 end
 
-def pwd
-  Dir.pwd
-end
 
-def home
+def home_path
   require 'etc'
-  Etc.getpwuid.dir
+  home_dir = Etc.getpwuid.dir
+  # for testing purposes create a different destination
+  # Dir.mkdir home_dir + 'test'
+  # http://ruby.runpaint.org/files
+end
+
+def check_file_existence
+  files.each do |f|
+    case type = File::Stat.new(f).ftype
+    when 'file' then puts 'something'
+    end
+  end
 end
 
 def default_installation
   installation_path = '/home/vlad/test/home'
   files.each do |file|
+    FileTest.directory
     FileUtils.cp_r file, installation_path
   end
 end
@@ -67,5 +77,11 @@ def alternate_installation
 end
 
 def exiting
-  puts "  Exiting.."
+  @exiting = true
+  puts "  Exiting now .."
+  exit 0
+end
+
+def exiting?
+  @exiting
 end
