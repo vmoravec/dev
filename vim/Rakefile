@@ -17,16 +17,16 @@ task :default => :install
 task :vim_install => :install
 
 def vim_configuration
-  vim  = "vim"
-  time = Time.now.strftime "%Y-%m-%d-%H:%M"
+  @vim  = "vim"
+  @time = Time.now.strftime "%Y-%m-%d-%H:%M"
 
   out
   out "This script is going to put vim configuration files in to your home folder."
   out
-  out "Your home folder seems to be at #{colorize home_dir}"
+  out "Your home folder seems to be at #{colorize home}"
   out
   out "If files or folders with the same name already exist, backup is going to be created at"
-  out "#{colorize home_dir + '/.dev-config/' + vim + '/' + time + '-backup'}"
+  out "#{colorize backup_path}"
   out
   out "If this is ok, confirm with 'yes'."
   out "If you prefer any different installation path, confirm with 'no'."
@@ -37,14 +37,16 @@ def vim_configuration
   input = STDIN.gets.strip
 
   case input
-  when "yes" then default_installation
-  when "no" then alternate_installation
+  when "yes"  then default_installation
+  when "no"   then alternate_installation
   when "exit" then exiting
   else
     out "Unknown option '#{input}'."
   end
 end
 
+def time ; @time end
+def vim  ; @vim  end
 
 def out text = '', options={:print=>false}
   if options[:print]
@@ -55,7 +57,7 @@ def out text = '', options={:print=>false}
 end
 
 def colorize text
-  "\e[1;33;40m#{text}\e[0m"
+  "\e[1;35;40m#{text}\e[0m"
 end
 
 def files
@@ -65,12 +67,10 @@ def files
 end
 
 
-def home_dir
+def home
+  return @home if @home
   require 'etc'
-  home = Etc.getpwuid.dir
-  # for testing purposes create a different destination
-  # Dir.mkdir home_dir + 'test'
-  # http://ruby.runpaint.org/files
+  @home = Etc.getpwuid.dir
 end
 
 def check_file_existence
@@ -81,8 +81,13 @@ def check_file_existence
   end
 end
 
+def backup_path
+  @backup_path ||= File.join home, '.devconf', vim, 'backup', time
+end
+
 def default_installation
   installation_path = '/home/vlad/test/home'
+  backup_path
   files.each do |file|
     FileTest.directory
     FileUtils.cp_r file, installation_path

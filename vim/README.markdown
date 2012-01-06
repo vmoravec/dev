@@ -3,6 +3,7 @@ VIM Configuration
 About
 -----
 Quick customization of vim providing some useful plugins, scripts and color schemes.
+Tested on two linux distros: debian squeeze and opensuse 11.4 . 
 
 Installation
 ------------
@@ -26,4 +27,8 @@ Content
 `Fugitive` https://github.com/tpope/vim-fugitive
 
 
+Todo
+----
+
++ rake tasks for update of plugins from github (avoid git submodules)
 
