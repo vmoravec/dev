@@ -10,7 +10,6 @@ end
 desc "Restore previous configuration"
 task :restore do
   puts "restoring the backup is not implemented yet"
-  #TODO arguments or choices to restore
 end
 
 task :default => :install
@@ -40,8 +39,7 @@ def vim_configuration
   when "yes"  then default_installation
   when "no"   then alternate_installation
   when "exit" then exiting
-  else
-    out "Unknown option '#{input}'."
+  else out "Unknown option '#{input}'."
   end
 end
 
@@ -56,16 +54,17 @@ def out text = '', options={:print=>false}
   end
 end
 
-def colorize text
-  "\e[1;35;40m#{text}\e[0m"
+def colorize text, color=:cyan
+  case color
+  when :cyan then "\e[1;35;40m#{text}\e[0m"
+  else
+    "\e[1;30;40m#{text}\e[0m"
+  end
 end
 
 def files
-  current_dir = Dir.pwd
-  files_dir_name = 'files'
-  Dir.entries File.join(current_dir, files_dir_name)
+  FILES
 end
-
 
 def home
   return @home if @home
@@ -73,26 +72,57 @@ def home
   @home = Etc.getpwuid.dir
 end
 
-def check_file_existence
-  files.each do |f|
-    case type = File::Stat.new(f).ftype
-    when 'file' then puts 'something'
-    end
-  end
-end
 
 def backup_path
   @backup_path ||= File.join home, '.devconf', vim, 'backup', time
 end
 
+FILES = {:path=>'files', :content=>{'vim'=>'.vim', 'vimrc'=>'.vimrc', 'test'=>'.test'}}
+
+def check_current_configuration
+  out 'Checking existing configuration files..'
+end
+
+def create_backup original;           end
+def apply_new_configuration file ; end
+
 def default_installation
-  installation_path = '/home/vlad/test/home'
-  backup_path
-  files.each do |file|
-    FileTest.directory
-    FileUtils.cp_r file, installation_path
+  details = Hash.new {|hash,key| hash[key] = {:source=>nil, :original=>nil}}
+  files[:content].each do |source,original|
+    details[source][:source]   = check :source=>source
+    details[source][:original] = check :original=>original
+    if details[source][:original][:exists]
+      create_backup details[source][:original]
+    else
+      apply_new_configuration details[source]
+    end
   end
 end
+
+def check opts={}
+  file_name = opts[opts.keys.first]
+  exists, type, full_path = nil
+
+  case opts.keys.first
+  when :original then path = home
+  when :source   then path = files[:path]
+  end
+
+  Dir.chdir path do
+    exists = File.exists? file_name
+    type = ( exists ? File::Stat.new(file_name).ftype : nil )
+    full_path = File.join( Dir.pwd, file_name ) if exists
+  end
+  {:exists=>exists,:type=>type,:path=>full_path}
+end
+
+ #files[:content].each_pair do |conf,real|
+ #  check_file_in_path real
+ #  #type = File::Stat.new(file).ftype.upcase
+ #  #puts type
+ #  #puts "#{type} #{File.join home, file_name} exists?  #{File.exists?(File.join home, file_name)}"
+ #  #FileUtils.cp_r file, installation_path
+ #end
 
 def alternate_installation 
   out "Enter the prefered path for vim config files (or Ctrl+C to exit): ", :print=>true
@@ -102,7 +132,7 @@ end
 def exiting
   @exiting = true
   out "Exiting now.."
-  exit 0
+  # exit 0
 end
 
 def exiting?

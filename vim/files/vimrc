@@ -10,6 +10,7 @@ set clipboard+=unnamed          " Yanks go on clipboard instead
 set history=256                 " Number of thins to remember in history
 set wrap
 set timeoutlen=250              " Time towait after ESC
+set noballooneval
 "   ----------------  TABS  ------------------
 set ts=2                        " Tabs are 2 spaces
 set bs=2                        " Backspace over everything in insert mode
