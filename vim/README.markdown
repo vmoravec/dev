@@ -8,11 +8,11 @@ Tested on two linux distros: debian squeeze and opensuse 11.4 .
 Installation
 ------------
 ### Git & Ruby
-`git clone git://github.com/vmoravec/dev-config.git`
+`git clone git://github.com/vmoravec/dev.git`
 
-`cd dev-config/vim`
+`cd dev/vim`
 
-`rake install`
+`rake`
 
 ### Manual
 When copying the content of the folder files/ by hand into the home folder, rename vim/ to .vim/ and vimrc to .vimrc
