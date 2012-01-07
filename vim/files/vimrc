@@ -67,7 +67,7 @@ autocmd vimenter * if !argc() | NERDTree | endif
 "   -------------  ESCAPE INSERT MODE  ---------
 map <S-Enter> O<Esc>j
 "   -------------  FONT ------------------------
-set gfn=Monospace\ 10\.7
+set gfn=Monospace\ 11
 set guicursor=a:blinkon0
 "   -------------  PATHOGEN --------------------
 call pathogen#infect()
