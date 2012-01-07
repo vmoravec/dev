@@ -57,12 +57,8 @@ def out text = '', options={:print=>false}
   end
 end
 
-def colorize text, color=:cyan
-  case color
-  when :cyan then "\e[1;35;40m#{text}\e[0m"
-  else
-    "\e[1;30;40m#{text}\e[0m"
-  end
+def colorize text
+  "\e[1;35;40m#{text}\e[0m"
 end
 
 def home
@@ -130,16 +126,11 @@ def check_target opts={}
   {:target_exists=>exists,:target_type=>type}
 end
 
-def alternate_installation 
-  out "Enter the prefered path for vim config files (or Ctrl+C to exit): ", :print=>true
-  input = STDIN.gets
-end
-
 def exiting
   @exiting = true
   out
   out "Exiting now.."
-  # exit 0
+  exit 0
 end
 
 def exiting?
