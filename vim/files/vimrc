@@ -63,7 +63,6 @@ map <C-K> <C-W>k<C-W>
 map <C-L> <C-W>l<C-W>
 map <C-H> <C-W>h<C-W>
 set wmw=0
-autocmd vimenter * if !argc() | NERDTree | endif
 "   -------------  ESCAPE INSERT MODE  ---------
 map <S-Enter> O<Esc>j
 "   -------------  FONT ------------------------
@@ -76,6 +75,17 @@ set statusline=%<%f\ %h%m%r%#Git#\ %{fugitive#statusline()}\ %#StatusLine#\ %=%-
 "   -------------  OVERLENGTH ------------------
 " highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 " match OverLength /\%81v.\+/
+"   ---------------  GUI CONDITIONS  ----------
+if has("gui_running")
+  if has("gui_gtk2")
+    " do not show the tooltips never ever
+    set noballooneval
+    " show the nerdtree if no file specified
+    autocmd vimenter * if !argc() | NERDTree | endif
+  else
+    " set other values
+  endif
+endif
 "   -------------  COMMENTS   -----------------
 " perl
 map ,# :s/^/#/<CR>

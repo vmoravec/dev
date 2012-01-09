@@ -1,0 +1,25 @@
+test -s ~/.alias && . ~/.alias || true
+
+alias treet="tree -L 3"
+alias treed="tree -L 2"
+alias treej="tree -L 1"
+alias lsa="ls -al"
+alias ls="ls --color"
+
+HISTSIZE=5000
+HISTFILESIZE=5000
+
+# show the current git branch if a git repo is present
+parse_git_branch() {
+    git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ \[\1\]/'
+}
+PS1='\[\033[01;37m\]\w\[\033[00;33m\]$(parse_git_branch)\[\033[00m\] \$ '
+
+# rvm script
+# Load RVM into a shell session *as a function*
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" 
+
+PS1="\$(~/.rvm/bin/rvm-prompt) $PS1"
+source "$rvm_path/contrib/ps1_functions"
+ps1_set --prompt ∴
+~/.LESS_TERMCAP
