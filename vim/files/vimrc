@@ -10,7 +10,6 @@ set clipboard+=unnamed          " Yanks go on clipboard instead
 set history=256                 " Number of thins to remember in history
 set wrap
 set timeoutlen=250              " Time towait after ESC
-set noballooneval
 "   ----------------  TABS  ------------------
 set ts=2                        " Tabs are 2 spaces
 set bs=2                        " Backspace over everything in insert mode
@@ -45,7 +44,7 @@ au BufNewFile,BufRead *.config set filetype=ruby
 au BufNewFile,BufRead *.ru set filetype=ruby
 autocmd BufWritePre *.{rb,js} :%s/\s\+$//e
 "   ----------------  COLORS  ------------------
-colorscheme black_background
+colorscheme grey_background
 "   ----------------  BACKUP  ------------------
 set nobackup
 set nowritebackup
@@ -63,10 +62,17 @@ map <C-K> <C-W>k<C-W>
 map <C-L> <C-W>l<C-W>
 map <C-H> <C-W>h<C-W>
 set wmw=0
+autocmd vimenter * if !argc() | NERDTree | endif
 "   -------------  ESCAPE INSERT MODE  ---------
 map <S-Enter> O<Esc>j
+"   -------------  INSERT IN NORMAL MODE -------
+" map <S-Enter> O<Esc>
+" map <CR> o<Esc>
+map <S-Enter> O<Esc>j
+map <CR> o<Esc>k
+:nnoremap <Space> i<Space><Esc>
 "   -------------  FONT ------------------------
-set gfn=Monospace\ 11
+set gfn=Monospace\ 10\.7
 set guicursor=a:blinkon0
 "   -------------  PATHOGEN --------------------
 call pathogen#infect()
@@ -78,10 +84,7 @@ set statusline=%<%f\ %h%m%r%#Git#\ %{fugitive#statusline()}\ %#StatusLine#\ %=%-
 "   ---------------  GUI CONDITIONS  ----------
 if has("gui_running")
   if has("gui_gtk2")
-    " do not show the tooltips never ever
     set noballooneval
-    " show the nerdtree if no file specified
-    autocmd vimenter * if !argc() | NERDTree | endif
   else
     " set other values
   endif
