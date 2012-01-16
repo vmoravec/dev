@@ -1,0 +1,65 @@
+IRB.conf[:AUTO_INDENT] = true
+IRB.conf[:USE_READLINE] = true
+IRB_LIBS = %w( rubygems interactive_editor irb/completion pp )
+
+module Helpers
+  module IRB
+    CR = "\r"
+    CLEAR = "\e[0K"
+    RESET = CR + CLEAR
+
+    def require_libs
+      errors = []
+      print 'Loading .irbrc'
+      ::IRB_LIBS.each {|lib|
+        begin
+        print ", #{lib}"
+        $stdout.flush
+        require lib
+        rescue Exception => e
+          errors << e.exception 
+          sleep 0.3
+        end
+        sleep 0.2
+      }
+      print "\nErrors while loading .irbrc:\n" unless errors.empty?
+      errors.each {|e| puts e.message }
+      print RESET
+    end
+
+    def self.included(main)
+      main.require_libs
+    end
+  end
+
+  module System
+    def clear ; system 'clear'  end
+    def lsa   ; system 'ls -al' end
+    def ls    ; system 'ls'     end
+    def ll    ; system 'ls -l'  end
+    def pwd   ; system 'pwd'    end
+    def cat file ; system "cat #{file}" end
+
+    def self.included(main)
+      main.clear
+      sleep 0.2
+    end
+  end
+
+  module Ruby
+    unless defined?(reload!)
+      $loaded_files = []
+      def load!(file)
+        $loaded_files << file
+        load file
+      end
+      def reload!
+        $loaded_files.each { |f| load f }
+      end
+    end
+  end
+end
+
+include Helpers::System
+include Helpers::Ruby
+include Helpers::IRB
