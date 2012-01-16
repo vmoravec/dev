@@ -20,7 +20,7 @@ module Helpers
           errors << e.exception 
           sleep 0.3
         end
-        sleep 0.2
+        sleep 0.35
       }
       print "\nErrors while loading .irbrc:\n" unless errors.empty?
       errors.each {|e| puts e.message }
@@ -33,16 +33,18 @@ module Helpers
   end
 
   module System
-    def clear ; system 'clear'  end
     def lsa   ; system 'ls -al' end
-    def ls    ; system 'ls'     end
     def ll    ; system 'ls -l'  end
     def pwd   ; system 'pwd'    end
-    def cat file ; system "cat #{file}" end
+    def cat file  ; system "cat #{file}" end
+    def ls dir='.'; system "ls #{dir}"   end
+
+    def clear call=false
+      call ? lambda {system 'clear'} : system('clear')
+    end
 
     def self.included(main)
       main.clear
-      sleep 0.2
     end
   end
 
@@ -63,3 +65,5 @@ end
 include Helpers::System
 include Helpers::Ruby
 include Helpers::IRB
+
+IRB.conf[:AT_EXIT] << clear(true)
