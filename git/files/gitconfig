@@ -11,5 +11,5 @@
   exludesfile = /home/vlado/.gitignore
 [user]
   name = Vladimir Moravec
-  email = vmoravec@suse.com
+#email = 
 
